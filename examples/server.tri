@@ -1,0 +1,59 @@
+# ═══════════════════════════════════════════════════════════════
+# server.tri — TRIKA Phase 17 HTTP Server Demo
+# Run: trika17 run server.tri
+# Test: curl http://localhost:8080/
+#       curl http://localhost:8080/guna
+#       curl http://localhost:8080/hello
+#       curl -X POST http://localhost:8080/echo -d "Hari Om"
+# ═══════════════════════════════════════════════════════════════
+gyan trika.network
+gyan trika.time
+
+karma handler(trika req):
+    trika method = req["method"]
+    trika path   = req["path"]
+    trika body   = req["body"]
+    trika now    = time.stamp()
+
+    uvach("[" + now + "] " + method + " " + path)
+
+    yadi path == "/":
+        phal network.respond(200,
+            "Hari Om Namah Shivaye!\nTRIKA HTTP Server — Phase 17\nBorn in Patna, Bihar, India",
+            "text/plain")
+
+    anyatha:
+        yadi path == "/guna":
+            phal network.respond(200,
+                "{\"SATTVA\": 1, \"RAJAS\": 0, \"TAMAS\": -1, \"lang\": \"TRIKA\"}",
+                "application/json")
+
+        anyatha:
+            yadi path == "/echo":
+                phal network.respond(200,
+                    "Echo: " + body,
+                    "text/plain")
+
+            anyatha:
+                yadi path == "/time":
+                    phal network.respond(200,
+                        now,
+                        "text/plain")
+
+                anyatha:
+                    phal network.respond(404,
+                        "Not found: " + path,
+                        "text/plain")
+
+uvach("╔══════════════════════════════════════════╗")
+uvach("║  TRIKA HTTP Server — Phase 17            ║")
+uvach("║  Hari Om Namah Shivaye 🕉️                ║")
+uvach("╚══════════════════════════════════════════╝")
+uvach("Routes:")
+uvach("  GET  /       → greeting")
+uvach("  GET  /guna   → guna JSON")
+uvach("  POST /echo   → echo body")
+uvach("  GET  /time   → current time")
+uvach("  ANY  /*      → 404")
+uvach("")
+network.serve(8080, "handler")

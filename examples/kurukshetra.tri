@@ -1,0 +1,331 @@
+# ═══════════════════════════════════════════════════════════════
+# KURUKSHETRA — The Simulation with Bhagavad Gita
+# TRIKA Language — Phase 11
+#
+# "The soul is never born nor dies at any time.
+#  It has not come into being, does not come into being,
+#  and will not come into being.
+#  It is unborn, eternal, ever-existing, and primeval."
+#                                     — Bhagavad Gita 2.20
+#
+# Hari Om Namah Shivaye
+# ═══════════════════════════════════════════════════════════════
+
+gyan trika.grid
+gyan trika.visual
+gyan trika.math
+gyan trika.time
+gyan trika.event
+gyan trika.file
+
+# ── CONFIGURATION ────────────────────────────────────────────
+trika ROWS  = 18
+trika COLS  = 18
+trika STEPS = 18
+trika SEED  = 108
+
+# ── GITA VERSES ──────────────────────────────────────────────
+# Stored as string variables — embedded in the simulation.
+# Each verse is: Sanskrit reference + English meaning.
+# Displayed at the exact moment it applies to the battlefield.
+
+trika VERSE_ARJUNA_GRIEF = "Gita 1.28 — Arjuna said: O Krishna, seeing my own kinsmen arrayed here, my limbs fail me and my mouth is parched. My body quivers and my hair stands on end. Before the battle — the warrior hesitates."
+
+trika VERSE_ETERNAL_SOUL = "Gita 2.19 — He who thinks that the soul is a slayer, and he who thinks that it is slain — both of them fail to perceive the truth. The soul neither slays nor is slain."
+
+trika VERSE_KARMA = "Gita 2.47 — You have a right to perform your prescribed duties, but you are not entitled to the fruits of your actions. Never consider yourself the cause of the results, and never be attached to not doing your duty."
+
+trika VERSE_SATTVA_GUNA = "Gita 14.6 — O sinless Arjuna, the mode of goodness (SATTVA), being purer than the others, is illuminating and free from all sinful reactions. Those situated in it become conditioned by happiness and knowledge."
+
+trika VERSE_DHARMA_RISES = "Gita 4.7-4.8 — Whenever dharma declines and adharma rises, I manifest Myself. For the protection of the good, for the destruction of the wicked, and for the re-establishment of dharma, I am born age after age."
+
+trika VERSE_TAMAS_GUNA = "Gita 14.8 — O son of Bharata, the mode of ignorance (TAMAS) causes the delusion of all living entities. The result of this mode is madness, indolence and sleep, which bind the conditioned soul."
+
+trika VERSE_SATTVA_SHINES = "Gita 14.11 — When there is an increase in the mode of goodness (SATTVA), the light of knowledge is manifest in all the gates of the body. When SATTVA prevails, all beings are illuminated."
+
+trika VERSE_INDESTRUCTIBLE = "Gita 2.17 — Know that which pervades the entire body is indestructible. No one is able to destroy the imperishable soul. That which is real — SAT — can never be destroyed."
+
+trika VERSE_SURRENDER = "Gita 18.66 — Abandon all varieties of dharmas and simply surrender unto Me. I shall deliver you from all sinful reactions. Do not fear."
+
+trika VERSE_VICTORY = "Gita 18.78 — Wherever there is Krishna, the master of all mystics, and wherever there is Arjuna, the supreme archer, there will also certainly be opulence, victory, extraordinary power, and morality."
+
+# ── VERSE DISPLAY KARMA ──────────────────────────────────────
+# Prints a verse in a box — called at key simulation moments
+
+karma speak_verse(trika verse):
+    uvach("")
+    uvach("  ┌─────────────────────────────────────────────────────┐")
+    uvach("  │  " + verse)
+    uvach("  └─────────────────────────────────────────────────────┘")
+    uvach("")
+
+# ── INITIALISE ───────────────────────────────────────────────
+math.seed(SEED)
+time.reset()
+
+trika field = grid.create(ROWS, COLS)
+
+# ── PLACE THE ARMIES ─────────────────────────────────────────
+grid.fill(field, RAJAS)
+
+# Pandavas (SATTVA) — left flank
+prati r = 0 to ROWS:
+    prati c = 0 to 4:
+        yadi math.rand(0, 10) > 3:
+            grid.set(field, r, c, SATTVA)
+
+# Kauravas (TAMAS) — right flank
+prati r = 0 to ROWS:
+    prati c = 14 to 18:
+        yadi math.rand(0, 10) > 3:
+            grid.set(field, r, c, TAMAS)
+
+# Special warriors at centre
+grid.set(field, 8, 7,  SATTVA)
+grid.set(field, 8, 8,  SATTVA)
+grid.set(field, 9, 7,  SATTVA)
+grid.set(field, 9, 8,  SATTVA)
+grid.set(field, 8, 9,  TAMAS)
+grid.set(field, 8, 10, TAMAS)
+grid.set(field, 9, 9,  TAMAS)
+grid.set(field, 9, 10, TAMAS)
+
+# ── EVENT HANDLERS ───────────────────────────────────────────
+karma on_dharma_rising(trika data):
+    uvach("  ✦ Dharma rising — Day " + str(data["day"]) + " | +" + str(data["gained"]) + " fields")
+
+karma on_adharma_rising(trika data):
+    uvach("  ✧ Adharma rising — Day " + str(data["day"]) + " | +" + str(data["gained"]) + " fields")
+
+karma on_day_report(trika data):
+    trika d     = data["day"]
+    trika s     = data["sattva"]
+    trika t     = data["tamas"]
+    trika r     = data["rajas"]
+    trika total = s + t + r
+    trika ps    = math.round(s * 100 / total)
+    trika pt    = math.round(t * 100 / total)
+    uvach("  Day " + str(d) + " | Pandava:" + str(ps) + "%  Kaurava:" + str(pt) + "%  Neutral:" + str(r))
+
+karma on_victory(trika data):
+    uvach("")
+    uvach("  ════════════════════════════════════════")
+    uvach("  JAI! " + data["victor"] + " prevail — Day " + str(data["day"]) + "!")
+    uvach("  ════════════════════════════════════════")
+
+event.on("dharma_rising",  "on_dharma_rising")
+event.on("adharma_rising", "on_adharma_rising")
+event.on("day_report",     "on_day_report")
+event.on("victory",        "on_victory")
+
+# ── LOG SETUP ────────────────────────────────────────────────
+file.mkdir("kurukshetra_log")
+file.write("kurukshetra_log/battle.log",  "KURUKSHETRA BATTLE LOG — Seed 108")
+file.write("kurukshetra_log/gita.log",    "GITA VERSES SPOKEN IN BATTLE")
+
+# ── OPENING ──────────────────────────────────────────────────
+uvach("")
+uvach("  ╔══════════════════════════════════════════╗")
+uvach("  ║    KURUKSHETRA — THE GITA SIMULATION    ║")
+uvach("  ╚══════════════════════════════════════════╝")
+uvach("")
+visual.legend()
+uvach("")
+
+# ── GITA: BEFORE BATTLE — ARJUNA'S GRIEF ────────────────────
+speak_verse(VERSE_ARJUNA_GRIEF)
+file.append("kurukshetra_log/gita.log", "Day 0: " + VERSE_ARJUNA_GRIEF)
+
+uvach("  — Before Battle — Day 0 —")
+visual.render_box(field, 0)
+uvach("")
+
+# ── BATTLE STATE ─────────────────────────────────────────────
+trika total_dharma_gained  = 0
+trika total_adharma_gained = 0
+trika victory_declared     = RAJAS
+trika verse_14_11_spoken   = RAJAS
+trika verse_tamas_spoken   = RAJAS
+
+# ── THE 18 DAYS ──────────────────────────────────────────────
+yavat time.step() < STEPS:
+    trika day = time.tick()
+
+    trika next = grid.copy(field)
+
+    trika day_dharma_gained  = 0
+    trika day_adharma_gained = 0
+
+    # Apply the Five Laws simultaneously
+    prati r = 0 to ROWS:
+        prati c = 0 to COLS:
+            trika ns      = grid.neighbor_states(field, r, c)
+            trika curr    = grid.get(field, r, c)
+            trika s_count = ns["SATTVA"]
+            trika t_count = ns["TAMAS"]
+
+            # Law 1: RAJAS + 2 SATTVA → SATTVA
+            yadi curr == RAJAS:
+                yadi s_count >= 2:
+                    grid.set(next, r, c, SATTVA)
+                    day_dharma_gained = day_dharma_gained + 1
+
+            # Law 2: RAJAS + 3 TAMAS + <2 SATTVA → TAMAS
+            yadi curr == RAJAS:
+                yadi t_count >= 3:
+                    yadi s_count < 2:
+                        grid.set(next, r, c, TAMAS)
+                        day_adharma_gained = day_adharma_gained + 1
+
+            # Law 3: SATTVA + 5+ TAMAS → RAJAS
+            yadi curr == SATTVA:
+                yadi t_count >= 5:
+                    grid.set(next, r, c, RAJAS)
+
+            # Law 4: TAMAS + 4+ SATTVA → RAJAS
+            yadi curr == TAMAS:
+                yadi s_count >= 4:
+                    grid.set(next, r, c, RAJAS)
+
+            # Law 5: RAJAS + 3+ SATTVA → SATTVA
+            yadi curr == RAJAS:
+                yadi s_count >= 3:
+                    grid.set(next, r, c, SATTVA)
+                    day_dharma_gained = day_dharma_gained + 1
+
+    grid.free(field)
+    field = next
+
+    trika s_now = grid.count(field, SATTVA)
+    trika t_now = grid.count(field, TAMAS)
+    trika r_now = grid.count(field, RAJAS)
+
+    total_dharma_gained  = total_dharma_gained  + day_dharma_gained
+    total_adharma_gained = total_adharma_gained + day_adharma_gained
+
+    # ── FIRE EVENTS ──────────────────────────────────────────
+    yadi day_dharma_gained > 0:
+        event.emit("dharma_rising",  {"day": day, "gained": day_dharma_gained})
+    yadi day_adharma_gained > 0:
+        event.emit("adharma_rising", {"day": day, "gained": day_adharma_gained})
+
+    event.emit("day_report", {"day": day, "sattva": s_now, "tamas": t_now, "rajas": r_now})
+
+    file.append("kurukshetra_log/battle.log", "Day " + str(day) + ": S=" + str(s_now) + " T=" + str(t_now) + " R=" + str(r_now))
+
+    # ── GITA VERSES — BY DAY ─────────────────────────────────
+
+    # Day 1: First contact — the soul cannot be slain
+    yadi day == 1:
+        speak_verse(VERSE_ETERNAL_SOUL)
+        file.append("kurukshetra_log/gita.log", "Day 1: " + VERSE_ETERNAL_SOUL)
+
+    # Day 3: First blood — act without attachment
+    yadi day == 3:
+        uvach("")
+        uvach("  — Day 3: First Blood —")
+        visual.render_box(field, day)
+        speak_verse(VERSE_KARMA)
+        file.append("kurukshetra_log/gita.log", "Day 3: " + VERSE_KARMA)
+
+    # Day 6: SATTVA guna illuminates — show when dharma leads
+    yadi day == 6:
+        trika total6 = s_now + t_now + r_now
+        trika pct_s6 = math.round(s_now * 100 / total6)
+        yadi pct_s6 > 50:
+            speak_verse(VERSE_SATTVA_GUNA)
+            file.append("kurukshetra_log/gita.log", "Day 6: " + VERSE_SATTVA_GUNA)
+
+    # TAMAS verse — when adharma gains more than 10 fields in a day
+    yadi verse_tamas_spoken == RAJAS:
+        yadi day_adharma_gained >= 10:
+            verse_tamas_spoken = SATTVA
+            speak_verse(VERSE_TAMAS_GUNA)
+            file.append("kurukshetra_log/gita.log", "Day " + str(day) + ": " + VERSE_TAMAS_GUNA)
+
+    # Day 9: The turning point
+    yadi day == 9:
+        uvach("")
+        uvach("  — Day 9: The Tide Turns —")
+        visual.render_box(field, day)
+
+    # SATTVA verse — when dharma holds 55%+ and RAJAS = 0
+    yadi verse_14_11_spoken == RAJAS:
+        trika total_n = s_now + t_now + r_now
+        trika pct_sn  = math.round(s_now * 100 / total_n)
+        yadi pct_sn >= 55:
+            yadi r_now == 0:
+                verse_14_11_spoken = SATTVA
+                speak_verse(VERSE_SATTVA_SHINES)
+                file.append("kurukshetra_log/gita.log", "Day " + str(day) + ": " + VERSE_SATTVA_SHINES)
+
+    # Day 18: The last stand
+    yadi day == 18:
+        uvach("")
+        uvach("  — Day 18: The Last Stand —")
+        visual.render_box(field, day)
+        speak_verse(VERSE_INDESTRUCTIBLE)
+        file.append("kurukshetra_log/gita.log", "Day 18: " + VERSE_INDESTRUCTIBLE)
+
+    # ── VICTORY CHECK — 60% threshold ────────────────────────
+    trika v_threshold = ROWS * COLS * 60 / 100
+    yadi victory_declared == RAJAS:
+        yadi s_now >= v_threshold:
+            victory_declared = SATTVA
+            event.emit("victory", {"victor": "Pandavas (Dharma)", "day": day})
+            speak_verse(VERSE_DHARMA_RISES)
+            file.append("kurukshetra_log/gita.log", "VICTORY Day " + str(day) + ": " + VERSE_DHARMA_RISES)
+        yadi t_now >= v_threshold:
+            victory_declared = TAMAS
+            event.emit("victory", {"victor": "Kauravas (Adharma)", "day": day})
+
+# ── FINAL RESULT ─────────────────────────────────────────────
+uvach("")
+uvach("  ╔══════════════════════════════════════════╗")
+uvach("  ║           BATTLE CONCLUDED               ║")
+uvach("  ╚══════════════════════════════════════════╝")
+uvach("")
+
+visual.stats(field)
+uvach("")
+
+trika final_s = grid.count(field, SATTVA)
+trika final_t = grid.count(field, TAMAS)
+trika final_r = grid.count(field, RAJAS)
+trika final_total = ROWS * COLS
+trika final_ps = math.round(final_s * 100 / final_total)
+trika final_pt = math.round(final_t * 100 / final_total)
+
+uvach("  Total dharma gained   : " + str(total_dharma_gained))
+uvach("  Total adharma gained  : " + str(total_adharma_gained))
+uvach("  Dharma advantage      : " + str(total_dharma_gained - total_adharma_gained))
+uvach("")
+
+# Final verdict + appropriate Gita verse
+resolve victory_declared:
+    case SATTVA:
+        uvach("  ✦ JAI! DHARMA PREVAILS! 🟢 SATTVA (+1)")
+        uvach("  The Pandavas hold " + str(final_ps) + "% of the field.")
+        speak_verse(VERSE_VICTORY)
+        file.append("kurukshetra_log/gita.log", "FINAL: " + VERSE_VICTORY)
+    case TAMAS:
+        uvach("  ✧ ADHARMA HOLDS THE FIELD. 🔴 TAMAS (-1)")
+        uvach("  The Kauravas hold " + str(final_pt) + "% of the field.")
+        uvach("  But the wheel of dharma turns. This too shall pass.")
+        speak_verse(VERSE_SURRENDER)
+        file.append("kurukshetra_log/gita.log", "FINAL: " + VERSE_SURRENDER)
+    case RAJAS:
+        uvach("  ◈ THE BATTLE IS UNDECIDED. 🟡 RAJAS (0)")
+        yadi final_s > final_t:
+            uvach("  Pandavas lead — " + str(final_ps) + "% to " + str(final_pt) + "%.")
+        anyatha:
+            uvach("  Kauravas lead — " + str(final_pt) + "% to " + str(final_ps) + "%.")
+        speak_verse(VERSE_SURRENDER)
+
+file.append("kurukshetra_log/battle.log", "FINAL: S=" + str(final_s) + " T=" + str(final_t) + " R=" + str(final_r))
+
+uvach("")
+uvach("  Hari Om Namah Shivaye 🕉️")
+uvach("")
+
+grid.free(field)

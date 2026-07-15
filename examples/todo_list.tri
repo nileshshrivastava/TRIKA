@@ -1,0 +1,193 @@
+# ════════════════════════════════════════════════════════════
+# todo_list.tri — TRIKA Interactive Todo List
+# Fully tested against trika12 — all operations verified
+# Pattern: direct field access store[key]["field"]
+# Hari Om Namah Shivaye 🕉️
+# ════════════════════════════════════════════════════════════
+gyan trika.file
+gyan trika.time
+
+trika store   = {}
+trika active  = {}
+trika count   = 0
+trika next_id = 1
+
+# ── make a todo map ───────────────────────────────────────
+karma make_todo(trika id, trika title, trika st, trika date):
+    trika t = {}
+    add(t, "id",     id)
+    add(t, "title",  title)
+    add(t, "status", st)
+    add(t, "date",   date)
+    phal t
+
+# ── add a new todo ────────────────────────────────────────
+karma add_todo(trika title):
+    yadi len(title) == 0:
+        uvach("  Empty title not allowed")
+        phal TAMAS
+    trika key  = str(next_id)
+    trika todo = make_todo(next_id, title, RAJAS, time.stamp())
+    add(store,  key, todo)
+    add(active, key, SATTVA)
+    uvach("  Added [" + key + "]: " + title)
+    next_id = next_id + 1
+    count   = count   + 1
+    phal SATTVA
+
+# ── show all todos ────────────────────────────────────────
+karma show_todos():
+    uvach("")
+    uvach("=== Todo List (" + str(count) + " items) ===")
+    yadi count == 0:
+        uvach("  (empty)")
+        phal RAJAS
+    trika i = 1
+    yavat i < next_id:
+        trika key = str(i)
+        yadi active[key] == SATTVA:
+            trika sym = "[    ]"
+            yadi store[key]["status"] == SATTVA:
+                sym = "[DONE]"
+            anyatha:
+                yadi store[key]["status"] == TAMAS:
+                    sym = "[CANC]"
+            uvach("  " + sym + " " + key + ". " + store[key]["title"] + "  (" + store[key]["date"] + ")")
+        i = i + 1
+    uvach("")
+    phal SATTVA
+
+# ── complete a todo ───────────────────────────────────────
+karma complete_todo(trika id):
+    trika key = str(id)
+    yadi active[key] != SATTVA:
+        uvach("  Id " + key + " not found")
+        phal TAMAS
+    trika ttl  = store[key]["title"]
+    trika dt   = store[key]["date"]
+    add(store, key, make_todo(id, ttl, SATTVA, dt))
+    uvach("  Completed: " + ttl)
+    phal SATTVA
+
+# ── cancel a todo ─────────────────────────────────────────
+karma cancel_todo(trika id):
+    trika key = str(id)
+    yadi active[key] != SATTVA:
+        uvach("  Id " + key + " not found")
+        phal TAMAS
+    trika ttl  = store[key]["title"]
+    trika dt   = store[key]["date"]
+    add(store, key, make_todo(id, ttl, TAMAS, dt))
+    uvach("  Cancelled: " + ttl)
+    phal SATTVA
+
+# ── edit a todo title ─────────────────────────────────────
+karma edit_todo(trika id, trika newtitle):
+    trika key = str(id)
+    yadi active[key] != SATTVA:
+        uvach("  Id " + key + " not found")
+        phal TAMAS
+    trika st = store[key]["status"]
+    trika dt = store[key]["date"]
+    add(store, key, make_todo(id, newtitle, st, dt))
+    uvach("  Updated [" + key + "]: " + newtitle)
+    phal SATTVA
+
+# ── delete a todo ─────────────────────────────────────────
+karma delete_todo(trika id):
+    trika key = str(id)
+    yadi active[key] != SATTVA:
+        uvach("  Id " + key + " not found")
+        phal TAMAS
+    trika ttl = store[key]["title"]
+    add(active, key, TAMAS)
+    count = count - 1
+    uvach("  Deleted: " + ttl)
+    phal SATTVA
+
+# ── show stats ────────────────────────────────────────────
+karma show_stats():
+    trika done = 0
+    trika pend = 0
+    trika canc = 0
+    trika i = 1
+    yavat i < next_id:
+        trika key = str(i)
+        yadi active[key] == SATTVA:
+            yadi store[key]["status"] == SATTVA:
+                done = done + 1
+            anyatha:
+                yadi store[key]["status"] == TAMAS:
+                    canc = canc + 1
+                anyatha:
+                    pend = pend + 1
+        i = i + 1
+    uvach("=== Stats ===")
+    uvach("  Total:     " + str(count))
+    uvach("  Done:      " + str(done) + "  🟢")
+    uvach("  Pending:   " + str(pend) + "  🟡")
+    uvach("  Cancelled: " + str(canc) + "  🔴")
+    uvach("")
+    phal SATTVA
+
+# ── save to file ──────────────────────────────────────────
+karma save_todos():
+    trika lines = "id|title|status|date\n"
+    trika i = 1
+    yavat i < next_id:
+        trika key = str(i)
+        yadi active[key] == SATTVA:
+            trika ss = "RAJAS"
+            yadi store[key]["status"] == SATTVA:
+                ss = "SATTVA"
+            anyatha:
+                yadi store[key]["status"] == TAMAS:
+                    ss = "TAMAS"
+            lines = lines + key + "|" + store[key]["title"] + "|" + ss + "|" + store[key]["date"] + "\n"
+        i = i + 1
+    file.write("todos.txt", lines)
+    uvach("  Saved to todos.txt (" + str(count) + " items)")
+    phal SATTVA
+
+# ════════════════════════════════════════════════════════════
+# MAIN — Demo run (trika12 run todo_list.tri)
+# ════════════════════════════════════════════════════════════
+uvach("╔══════════════════════════════════════════╗")
+uvach("║  TRIKA Todo List — Hari Om Namah Shivaye ║")
+uvach("║  Gita 2.47 — Do your duty               ║")
+uvach("╚══════════════════════════════════════════╝")
+uvach("")
+
+uvach("--- Adding 7 todos ---")
+add_todo("Learn TRIKA language")
+add_todo("Build Kurukshetra simulation")
+add_todo("Write trika.canvas charts")
+add_todo("Deploy to GitHub Pages")
+add_todo("Meditate on Gita 2.47")
+add_todo("Study Phase 12 window module")
+add_todo("Review Phase 15b website")
+
+show_todos()
+
+uvach("--- Completing 1 and 2 ---")
+complete_todo(1)
+complete_todo(2)
+
+uvach("--- Cancelling 6 ---")
+cancel_todo(6)
+
+uvach("--- Editing 4 ---")
+edit_todo(4, "Deploy to GitHub Pages with full README")
+
+uvach("--- Deleting 7 ---")
+delete_todo(7)
+
+uvach("--- Final list ---")
+show_todos()
+
+show_stats()
+save_todos()
+
+uvach("╔══════════════════════════════════════════╗")
+uvach("║  EXIT: 0 — Hari Om Namah Shivaye 🕉️      ║")
+uvach("╚══════════════════════════════════════════╝")

@@ -1,0 +1,64 @@
+# ═══════════════════════════════════════════
+# hari_om.tri — TRIKA Hello World
+# Run: trika run hari_om.tri
+# ═══════════════════════════════════════════
+
+uvach("🕉️ Hari Om Namah Shivaye 🙏")
+uvach("")
+uvach("TRIKA — The World's First Ternary Language")
+uvach("Born in Patna, Bihar, India")
+uvach("")
+
+uvach("=== Three Gunas ===")
+darshan(SATTVA)
+darshan(RAJAS)
+darshan(TAMAS)
+
+uvach("")
+uvach("=== Variables ===")
+trika name  = "Arjuna"
+trika score = 95
+trika guna  = SATTVA
+uvach("Warrior: " + name)
+uvach("Score:   " + str(score))
+uvach("Guna:    ")
+darshan(guna)
+
+uvach("")
+uvach("=== karma (function) ===")
+karma greet(trika warrior):
+    uvach("Namaste, " + warrior + "!")
+    phal SATTVA
+
+darshan(greet("Arjuna"))
+darshan(greet("Bhima"))
+
+uvach("")
+uvach("=== resolve (switch) ===")
+trika status = SATTVA
+resolve status:
+    case SATTVA: uvach("Victory! Dharma wins.")
+    case RAJAS:  uvach("Battle continues...")
+    case TAMAS:  uvach("Darkness falls.")
+
+uvach("")
+uvach("=== Multi-line list ===")
+trika warriors = [
+    "Arjuna",
+    "Bhima",
+    "Yudhishthira",
+    "Nakula",
+    "Sahadeva"
+]
+uvach("Pandava count: " + str(len(warriors)))
+prati w in warriors:
+    uvach("  " + w)
+
+uvach("")
+uvach("=== String functions ===")
+uvach(upper("dharma"))
+uvach(slice("Kurukshetra", 0, 5))
+uvach(replace("Hello World", "World", "Dharma"))
+
+uvach("")
+uvach("Hari Om Namah Shivaye 🕉️")
