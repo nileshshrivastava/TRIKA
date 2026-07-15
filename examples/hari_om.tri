@@ -35,11 +35,14 @@ darshan(greet("Bhima"))
 
 uvach("")
 uvach("=== resolve (switch) ===")
-trika status = SATTVA
+trika status = RAJAS
 resolve status:
-    case SATTVA: uvach("Victory! Dharma wins.")
-    case RAJAS:  uvach("Battle continues...")
-    case TAMAS:  uvach("Darkness falls.")
+	case SATTVA:
+		uvach("Victory! Dharma wins.")
+    case RAJAS:
+		uvach("Battle continues...")
+    case TAMAS:
+		uvach("Darkness falls.")
 
 uvach("")
 uvach("=== Multi-line list ===")
