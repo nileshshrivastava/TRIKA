@@ -1,0 +1,82 @@
+gyan trika.time
+
+uvach("=== FIX 1: Multi-line list ===")
+trika scores = [
+    72, 85, 91,
+    63, 78, 88,
+    54, 76, 82
+]
+uvach("len=" + str(len(scores)))
+uvach("scores[0]=" + str(scores[0]))
+uvach("scores[8]=" + str(scores[8]))
+
+uvach("")
+uvach("=== FIX 2: Global vars inside karma ===")
+trika global_count = 0
+karma increment():
+    global_count = global_count + 1
+    uvach("  count=" + str(global_count))
+increment()
+increment()
+increment()
+uvach("  final=" + str(global_count))
+
+uvach("")
+uvach("=== FIX 3: virama nearest loop only ===")
+karma find_first(trika lst):
+    prati item in lst:
+        yadi item > 50:
+            uvach("  found: " + str(item))
+            virama
+    uvach("  karma returned ok")
+    phal SATTVA
+find_first([10, 30, 75, 20, 90])
+uvach("  outer continues after karma virama")
+
+uvach("")
+uvach("=== FIX 4: resolve anyatha default ===")
+trika cmd = "unknown_cmd"
+resolve cmd:
+    case "add":
+        uvach("  adding")
+    case "quit":
+        uvach("  quitting")
+    anyatha:
+        uvach("  Unknown command: " + cmd)
+
+uvach("")
+uvach("=== FIX 5: uvach multi-value ===")
+trika a = 10
+trika b = 20
+uvach("Sum:", a + b, "Product:", a * b)
+
+uvach("")
+uvach("=== FIX 6: String functions ===")
+trika s = "  Hari Om Namah Shivaye  "
+uvach("trim:       '" + trim(s) + "'")
+uvach("upper:       " + upper("dharma"))
+uvach("lower:       " + lower("KARMA"))
+uvach("slice:       " + slice("Kurukshetra", 0, 5))
+uvach("contains:    ")
+darshan(contains("Bhagavad Gita", "Gita"))
+uvach("startswith:  ")
+darshan(startswith("TRIKA", "TRI"))
+uvach("endswith:    ")
+darshan(endswith("trika.canvas", "canvas"))
+uvach("replace:     " + replace("Hello World", "World", "Dharma"))
+trika parts = split("one,two,three", ",")
+uvach("split len:   " + str(len(parts)))
+uvach("split[0]:    " + parts[0])
+uvach("split[2]:    " + parts[2])
+trika words = ["Hari", "Om", "Namah", "Shivaye"]
+uvach("join:        " + join(words, " "))
+
+uvach("")
+uvach("=== FIX 7: Inline yadi ===")
+trika x = 42
+yadi x > 0: uvach("  x is positive")
+yadi x == 42: uvach("  x is 42")
+yadi x < 0: uvach("  x is negative")
+
+uvach("")
+uvach("ALL 7 FIXES — EXIT: 0")
