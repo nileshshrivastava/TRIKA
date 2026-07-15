@@ -75,37 +75,7 @@ TRIKA uses Sanskrit keywords so that **the code itself carries philosophical mea
 
 ---
 
-## Quick Start
 
-### Build (Windows MinGW-w64)
-```cmd
-gcc -std=c11 src\trika_token.c src\trika_value.c src\trika_env.c src\trika_ast.c ^
-    src\trika_lexer.c src\trika_parser.c src\trika_input.c ^
-    stdlib\trika_math.c stdlib\trika_file.c stdlib\trika_time.c ^
-    stdlib\trika_grid.c stdlib\trika_visual.c stdlib\trika_event.c ^
-    stdlib\trika_window.c stdlib\trika_generator.c stdlib\trika_canvas.c ^
-    stdlib\trika_network.c stdlib\trika_db.c ^
-    src\trika_interp.c src\trika_main.c ^
-    -o trika -lm -lws2_32
-```
-
-### Build (Linux / macOS)
-```bash
-gcc -std=c11 src/trika_token.c src/trika_value.c src/trika_env.c src/trika_ast.c \
-    src/trika_lexer.c src/trika_parser.c src/trika_input.c \
-    stdlib/trika_math.c stdlib/trika_file.c stdlib/trika_time.c \
-    stdlib/trika_grid.c stdlib/trika_visual.c stdlib/trika_event.c \
-    stdlib/trika_window.c stdlib/trika_generator.c stdlib/trika_canvas.c \
-    stdlib/trika_network.c stdlib/trika_db.c \
-    src/trika_interp.c src/trika_main.c \
-    -o trika -lm
-```
-
-### Build with SQLite (optional)
-```bash
-# Download sqlite3.c from https://sqlite.org/download.html
-gcc -std=c11 -DTRIKA_SQLITE [all .c files] tools/sqlite3.c -o trika -lm
-```
 
 ### Run a program
 ```bash
@@ -286,59 +256,6 @@ funnel, surface3d, scatter3d, bar3d
 SATTVA/RAJAS/TAMAS based on value thresholds. No equivalent in matplotlib.
 
 ---
-
-## Architecture
-
-```
-TRIKA Pure C Runtime
-│
-├── src/              Core interpreter
-│   ├── trika_lexer.c     Tokenizer (bracket-aware newlines)
-│   ├── trika_parser.c    Recursive-descent parser
-│   ├── trika_ast.c/.h    AST node definitions
-│   ├── trika_interp.c    Tree-walking interpreter
-│   ├── trika_value.c/.h  TValue tagged union + refcounting
-│   ├── trika_env.c/.h    Lexical scoping / environment chain
-│   ├── trika_token.c/.h  Token definitions
-│   ├── trika_input.c/.h  Interactive input
-│   └── trika_main.c      Entry point
-│
-├── stdlib/           Standard library (11 modules)
-│   ├── trika_math.c/.h
-│   ├── trika_file.c/.h
-│   ├── trika_time.c/.h
-│   ├── trika_grid.c/.h
-│   ├── trika_visual.c/.h
-│   ├── trika_event.c/.h
-│   ├── trika_window.c/.h
-│   ├── trika_generator.c/.h
-│   ├── trika_canvas.c/.h
-│   ├── trika_network.c/.h
-│   └── trika_db.c/.h
-│
-├── examples/         Example programs
-│   ├── hello.tri
-│   ├── kurukshetra.tri   18x18 Bhagavad Gita cellular automaton
-│   ├── server.tri        HTTP server demo
-│   ├── todo_list.tri     Real-world app demo
-│   └── ...
-│
-├── tests/            Regression tests
-│   ├── test_fixes.tri    Phase 16 — all 7 language fixes
-│   ├── test_network.tri  Phase 17 — HTTP module
-│   ├── test_db.tri       Phase 18 — database module
-│   └── test_sqlite.tri   Phase 19 — SQLite backend
-│
-├── docs/             Documentation
-│   ├── LANGUAGE_SPEC.md  Full language specification
-│   ├── CANVAS_GUIDE.md   Canvas/charting reference
-│   └── SETUP_GUIDE.md    Installation guide
-│
-└── tools/            Optional tools
-    ├── sqlite3.c         SQLite3 amalgamation (download separately)
-    └── sqlite3.h         SQLite3 header
-```
-
 ---
 
 ## Database Backends
