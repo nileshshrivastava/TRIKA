@@ -25,7 +25,7 @@
 12. [Window Primitive](#12-trika-window---position-aware-stream-window)
 13. [Generator Primitive](#13-trika-generator---generative-pattern-primitive)
 14. [Three-Level Certainty Architecture](#14-three-level-certainty-architecture)
-15. [Compile and Run](#15-compile-and-run)
+
 
 ---
 
@@ -1092,25 +1092,9 @@ generator.free(g)
 
 ---
 
-## 15. Compile and Run
+## 15. Run
 
-### Prerequisites
 
-- GCC with C11 support
-- Standard C library (`-lm` for math)
-
-### Phase 12 Compile Command
-
-```bash
-gcc -std=c11 \
-    trika_token.c trika_value.c trika_env.c trika_ast.c \
-    trika_lexer.c trika_parser.c trika_input.c \
-    trika_math.c trika_file.c trika_time.c \
-    trika_grid.c trika_visual.c trika_event.c \
-    trika_window.c trika_generator.c \
-    trika_interp.c trika_main.c \
-    -o trika -lm
-```
 
 ### Run a Program
 
@@ -1130,27 +1114,7 @@ gcc -std=c11 \
 > virama    (or exit)
 ```
 
-### Source File Organization
 
-| File | Purpose |
-|------|---------|
-| `trika_token.c/.h` | Tokenizer |
-| `trika_lexer.c/.h` | Lexer |
-| `trika_parser.c/.h` | Parser → AST |
-| `trika_ast.c/.h` | AST node definitions |
-| `trika_value.c/.h` | Value system + refcounting |
-| `trika_env.c/.h` | Environment (variable scopes) |
-| `trika_interp.c/.h` | Tree-walking interpreter |
-| `trika_input.c/.h` | Input handling |
-| `trika_main.c` | Entry point |
-| `trika_math.c/.h` | trika.math stdlib |
-| `trika_file.c/.h` | trika.file stdlib |
-| `trika_time.c/.h` | trika.time stdlib |
-| `trika_grid.c/.h` | trika.grid stdlib |
-| `trika_visual.c/.h` | trika.visual stdlib |
-| `trika_event.c/.h` | trika.event stdlib |
-| `trika_window.c/.h` | trika.window stdlib |
-| `trika_generator.c/.h` | trika.generator stdlib |
 
 ---
 
@@ -1178,20 +1142,6 @@ gyan trika.time
 This is not an example. It is the proof that every module works together — that the Gita's physics are computationally valid.
 
 ---
-
-## Summary
-
-```
-TRIKA Phase 12 — Complete Language
-
-  Phases 1-8:   Core language, parser, interpreter, type system
-  Phase 9:      6 stdlib modules: math, file, time, grid, visual, event
-  Phase 10-11:  Kurukshetra simulation — 5 guna laws, 9 Gita verses
-  Phase 12:     trika.window + trika.generator + streaming pipeline
-  Phase 13:     This specification
-
-  13 modules total. 8 stdlib. 1 demo. This document.
-  Born in Patna, Bihar, India. Built in Pure C. One Man Army.
 
   🕉️ Hari Om Namah Shivaye
 ```
