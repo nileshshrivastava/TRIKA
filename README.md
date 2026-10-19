@@ -6,7 +6,7 @@
 
 *Born in Patna, Bihar, India · Pure C · One Man Army*
 
-**"You have a right to perform your duty, but not to the fruits of action."**
+**"You have a right to perform your duty, but not to the fruits of action."**  
 *— Bhagavad Gita 2.47*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -21,7 +21,7 @@
 
 ## What is TRIKA?
 
-TRIKA is the **world's first ternary programming language** — built from scratch in pure C with zero external dependencies. Unlike every other programming language built on binary `true`/`false` logic, TRIKA's foundational logic is **three-valued**, rooted in the philosophy of the **Bhagavad Gita**.
+TRIKA is the **world's first ternary programming language** — built from scratch in pure C with zero external dependencies. Unlike every other programming language built on binary `true` / `false` logic, TRIKA's foundational logic is **three-valued**, rooted in the philosophy of the **Bhagavad Gita**.
 
 Every value in TRIKA resolves to one of three **gunas** (qualities):
 
@@ -60,6 +60,7 @@ TRIKA uses Sanskrit keywords so that **the code itself carries philosophical mea
 | `karma` | action/function | `function` / `def` |
 | `gyan` | knowledge/import | `import` |
 | `uvach` | spoke/print | `print` |
+| `darshan` | sacred seeing / inspect | inspect |
 | `phal` | fruit/return | `return` |
 | `yadi` | if | `if` |
 | `anyatha` | otherwise | `else` |
@@ -70,14 +71,14 @@ TRIKA uses Sanskrit keywords so that **the code itself carries philosophical mea
 | `agrim` | forward/continue | `continue` |
 | `sadhana` | practice/try | `try` |
 | `raksha` | protect/catch | `catch` |
+| `antim` | finally | `finally` |
 | `sankat` | crisis/throw | `throw` |
 | `vivek` | wisdom/query | single-pass query |
 
 ---
 
-
-
 ### Run a program
+
 ```bash
 trika run examples/hello.tri
 trika run examples/server.tri
@@ -95,6 +96,7 @@ darshan(SATTVA)
 ```
 
 Output:
+
 ```
 Hari Om Namah Shivaye!
 TRIKA — The Ternary Language
@@ -106,6 +108,7 @@ TRIKA — The Ternary Language
 ## Language Features
 
 ### Variables and Types
+
 ```trika
 trika x     = 42           # integer
 trika pi    = 3.14159      # float
@@ -117,6 +120,7 @@ add(map, "key", "value")   # map operations
 ```
 
 ### Multi-line Lists
+
 ```trika
 trika scores = [
     72, 85, 91,
@@ -126,6 +130,7 @@ trika scores = [
 ```
 
 ### Functions (karma)
+
 ```trika
 karma add(trika a, trika b):
     phal a + b
@@ -135,6 +140,7 @@ uvach("Sum: " + str(result))
 ```
 
 ### Conditionals
+
 ```trika
 yadi x > 0: uvach("positive")    # inline yadi
 yadi x == 0:
@@ -144,6 +150,7 @@ anyatha:
 ```
 
 ### Loops
+
 ```trika
 trika i = 0
 yavat i < 5:
@@ -155,6 +162,7 @@ prati item in [1, 2, 3, 4, 5]:
 ```
 
 ### Ternary Switch
+
 ```trika
 resolve status:
     case SATTVA: uvach("Success")
@@ -164,6 +172,7 @@ resolve status:
 ```
 
 ### Error Handling
+
 ```trika
 sadhana:
     trika result = risky_operation()
@@ -176,6 +185,7 @@ antim:
 ```
 
 ### String Functions
+
 ```trika
 uvach(upper("dharma"))           # DHARMA
 uvach(slice("Kurukshetra", 0, 5)) # Kuruk
@@ -186,21 +196,40 @@ uvach(join(["Hari", "Om"], " "))  # Hari Om
 
 ---
 
-## Standard Library — 11 Modules
+## Standard Library
+
+### Core modules
 
 | Module | Import | Key Functions |
 |--------|--------|---------------|
 | **math** | `gyan trika.math` | sin, cos, sqrt, pow, rand, PI, E, PHI |
-| **file** | `gyan trika.file` | read, write, lines, exists, copy, move, ext |
+| **file** | `gyan trika.file` | read, write, lines, exists, copy, move, mkdir, ext |
 | **time** | `gyan trika.time` | stamp, ms, sleep, format, start/stop/elapsed |
 | **grid** | `gyan trika.grid` | create, set, get, neighbors4/8 (cellular automata) |
 | **visual** | `gyan trika.visual` | render, SYMBOL/EMOJI/BLOCK modes |
 | **event** | `gyan trika.event` | on, emit, off, history (pub/sub) |
 | **window** | `gyan trika.window` | sliding window algorithms |
 | **generator** | `gyan trika.generator` | fibonacci, tribonacci, custom sequences |
-| **canvas** | `gyan trika.canvas` | **28 chart types** (line, bar, pie, heatmap, 3D...) |
+| **canvas** | `gyan trika.canvas` | figures, axes, **many chart types**, save PNG |
 | **network** | `gyan trika.network` | HTTP GET/POST, serve (raw sockets, zero dependencies) |
 | **database** | `gyan trika.database` | CRUD for memory/CSV/JSON/SQLite/MySQL/PostgreSQL/Redis |
+
+### Science modules (astronomy & spectroscopy)
+
+| Module | Import | Role |
+|--------|--------|------|
+| **fits** | `gyan trika.fits` | FITS open/close, MEF, RICE/funpack, header, image, table, WCS, stats, centroid, aperture, radial, quadrant, stack, `meta_title`, `save_png` |
+| **astro** | `gyan trika.astro` | time, coordinates, airmass, moon, site helpers |
+| **signal** | `gyan trika.signal` | filters, peaks, Haser / dust profile fits |
+| **spectrum** | `gyan trika.spectrum` | IR/optical catalogs, find_peaks, match, identify, report |
+| **mpl** | `gyan trika.mpl` | figure / subplot / plot / axvline / title / save |
+| **num / plot / image_layout** | `gyan trika.*` | numerics and layout helpers |
+
+**Rule:** C libraries stay **generic**. The scientist’s `.tri` script chooses the analysis. No observatory or target name is required inside the C core.
+
+```text
+any FITS  →  fits.* (data)  →  .tri analysis  →  canvas / mpl (publication PNG)
+```
 
 ---
 
@@ -235,7 +264,7 @@ uvach("rows: " + str(database.count(conn, "warriors")))
 
 ---
 
-## trika.canvas — 28 Chart Types
+## trika.canvas — charts
 
 ```trika
 gyan trika.canvas
@@ -247,18 +276,74 @@ canvas.show(fig)
 canvas.save(fig, "dharma.html")
 ```
 
-**Chart types:** line, scatter, bar, barh, histogram, pie, area, step,
-stem, errorbar, fill_between, boxplot, violin, kde, heatmap, contour,
-imshow, candlestick, waterfall, gantt, radar, polar, treemap, sunburst,
-funnel, surface3d, scatter3d, bar3d
+**Chart types include:** line, scatter, bar, barh, histogram, pie, area, step, stem, errorbar, fill_between, boxplot, violin, kde, heatmap, contour, imshow, candlestick, waterfall, gantt, radar, polar, treemap, sunburst, funnel, surface3d, scatter3d, bar3d
 
-**TRIKA-unique:** `canvas.guna_color()` — colors data points
-SATTVA/RAJAS/TAMAS based on value thresholds. No equivalent in matplotlib.
+**TRIKA-unique:** `canvas.guna_color()` — colors data points SATTVA/RAJAS/TAMAS by value thresholds.
+
 
 ---
+
+## trika.mpl — publication-style plots
+
+Thin front-end over the layout engine for scripts that prefer a matplotlib-like call style:
+
+```trika
+gyan trika.mpl
+
+trika fig = mpl.figure(12, 5)
+trika ax  = mpl.subplot(fig, 1, 1, 1)
+mpl.plot(fig, ax, x, y)
+mpl.title(fig, ax, "ATLAS | 2025-08-06 | JWST")
+mpl.xlabel(fig, ax, "wavelength (um)")
+mpl.ylabel(fig, ax, "flux (Jy)")
+mpl.grid(fig, ax, SATTVA)
+mpl.axvline(fig, ax, 4.27, "CO2 4.27")
+mpl.axvline(fig, ax, 4.65, "CO 4.65")
+mpl.save(fig, "spectrum.png")
+```
+
+Use **canvas** for the full chart zoo; use **mpl** when you want figure / axes / line / vline / save with minimal ceremony.
+
 ---
 
-## Database Backends
+## FITS (data layer)
+
+```trika
+gyan trika.fits
+
+trika paths = fits.scan_dir("data")
+trika h = fits.open(paths[0])
+trika title = fits.meta_title(h)   # OBJECT | DATE-OBS | TELESCOP | INSTRUME
+trika c = fits.centroid(h)
+fits.save_png(h, "frame.png", 0, "hot")
+fits.close(h)
+```
+
+Works with standard FITS from any observatory (imaging, tables, compressed tiles) when the product is valid FITS.
+
+---
+
+## Spectrum identification
+
+```trika
+gyan trika.spectrum
+gyan trika.mpl
+gyan trika.fits
+
+spectrum.catalog("ir")    # or "optical" | "all"
+trika h = fits.open("spectrum_x1d.fits")
+trika wave = fits.column(h, "WAVELENGTH")
+trika flux = fits.column(h, "FLUX")
+trika title = fits.meta_title(h)
+fits.close(h)
+
+trika idn = spectrum.identify(wave, flux, 0.08, 6.0)
+# KNOWN vs ORPHAN — unmatched lines stay ORPHAN until the catalog is extended
+```
+
+---
+
+## Database backends
 
 | Backend | Flag | Library | URL |
 |---------|------|---------|-----|
@@ -273,27 +358,57 @@ SATTVA/RAJAS/TAMAS based on value thresholds. No equivalent in matplotlib.
 
 ---
 
-## Zero External Dependencies
+## Zero external dependencies
 
 TRIKA is designed to be **completely self-contained**:
 
-- No Python runtime
-- No Node.js
-- No package manager
-- No install scripts
-- Just `gcc` and your source files
+- No Python runtime  
+- No Node.js  
+- No package manager  
+- No install scripts  
+- Just `gcc` and your source files  
 
-The only optional dependency is `sqlite3.c` — a single file download from sqlite.org, included directly in your build. Everything else — HTTP networking, file I/O, math, graphics — is pure C.
+Optional: `sqlite3.c` from sqlite.org. Networking, file I/O, math, FITS, spectrum catalogs, and charts are pure C.
 
 ---
 
-## Platform Support
+## Build
+
+```bash
+# Windows (MinGW-w64)
+gcc -std=c11 -I src -I stdlib -I tools src/*.c stdlib/*.c -o trika -lm -lws2_32
+
+# Linux
+gcc -std=c11 -I src -I stdlib -I tools src/*.c stdlib/*.c -o trika -lm
+```
+
+---
+
+## Platform support
 
 | Platform | Compile | Tested |
 |----------|---------|--------|
 | Windows (MinGW-w64) | `gcc -lm -lws2_32` | ✅ Confirmed |
 | Linux (gcc) | `gcc -lm` | ✅ Confirmed |
 | macOS (clang) | `clang -lm` | Should work |
+
+---
+
+## Repository layout
+
+```text
+TRIKA/
+  src/          # language core
+  stdlib/       # modules (fits, spectrum, signal, astro, canvas, ...)
+  tools/        # optional sqlite3.c
+  examples/
+  tests/
+  docs/
+  README.md
+  LICENSE
+```
+
+Do not commit large observatory data archives or API tokens.
 
 ---
 
